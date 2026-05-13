@@ -1,6 +1,5 @@
-# ⚾ Predicting MLB Free Agent Contracts with Machine Learning
-# ds606-mlb-salary-prediction
-# MLB Salary Prediction Using Sabermetrics (DS606)
+# ⚾ Predicting MLB Free Agent Contracts with Machine Learning Using Sabermetrics
+# DATA 606
 
 ## Project Summary
 We build models to predict MLB player contract value (e.g., Average Annual Value / salary) using player performance metrics and sabermetrics (e.g., WAR, OPS+).
