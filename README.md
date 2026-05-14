@@ -29,7 +29,7 @@ Sources: FanGraphs
 - `slides/`: presentation files
 
 ### Team
-Cliff, Siddika, Michael, Sai
+Siddika Bhuiyanmisha, Sai Rakshit Goud Pudari, Cliff Saul, Michael Wellen
 
 ---
 
