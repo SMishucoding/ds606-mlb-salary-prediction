@@ -35,15 +35,15 @@ Cliff, Siddika, Michael, Sai
 
 ## The Problem
 
-Every November, after the World Series has been decided, player agents and team front offices begin the ritual of MLB free agency. It's a market where teams commit hundreds of millions of dollars to players based on a mix of statistics, gut instinct, medical reports, and negotiating leverage. Get it right and you can build a team that can contend for a World Series. Get it wrong and a bad contract can handcuff a franchise for half a decade.
+Every November, after the World Series has been decided, player agents and team front offices begin the ritual of MLB free agency. It's a market where teams commit hundreds of millions of dollars to players based on a mix of statistics, team needs, medical reports, and negotiating leverage. If a team gets it right, they can build a team that regularly contends for the World Series. If a team gets it wrong, a bad contract can seriously damage the team's on-field performance and off-field finances for years.
 
-The question that motivated this project: **can a machine learning pipeline predict what a player will earn using only publicly available statistics?**
+The question that motivated this project: can machine learning models predict what a MLB player will earn in an upcoming contract using only publicly available statistics?
 
 ---
 
 ## The Data
 
-Two datasets form the backbone of this project:
+As mentioned above, two datasets are core to this project:
 
 - **FanGraphs player statistics (2016–2025):** One row per player-season, covering various performance metrics including WAR, wRC+, xwOBA, Barrel%, HardHit%, defensive runs (Def), and plate appearances (PA).
 - **MLB free agent contracts (2017–2026):** 2,996 rows of contracts, most of which are minor league contracts. For guaranteed major league contracts signed with MLB teams, features include AAV (Average Annual Value), contract length, position, and MLBAM player IDs for joining to the stats dataset.
@@ -52,7 +52,7 @@ Two datasets form the backbone of this project:
 
 ---
 
-## The Central Insight: The Market Is Not One Market
+## Key Project Decision: The Market Is Not One Market
 
 The single most important design decision in this project wasn't a modeling choice; it was recognizing that free agent contracts don't follow a single distribution.
 
