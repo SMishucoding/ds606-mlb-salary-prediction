@@ -4,7 +4,7 @@
 ---
 
 ## Project Summary
-We build models to predict MLB player contract value (e.g., Average Annual Value / salary) using player performance metrics and sabermetrics (e.g., WAR, OPS+).
+We build models to predict MLB player contract value (e.g., Average Annual Value / salary) using player characteristics and performance sabermetrics (e.g., WAR, OPS+).
 
 ### Research Questions
 1. Can player performance metrics predict salary/contract value?
