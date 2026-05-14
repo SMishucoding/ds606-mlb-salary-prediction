@@ -62,11 +62,11 @@ The solution: **three separate tiers, each with its own model.**
 
 | Tier | WAR Range | n (train) | Deployed Model |
 |------|-----------|-----------|----------------|
-| **Fringe** | WAR < 0.5 | ~167 | Stacked Ensemble |
-| **Role** | 0.5 ≤ WAR < 2.0 | ~219 | Random Forest |
-| **Upper** | WAR ≥ 2.0 | ~114 | Comp Engine |
+| **Fringe** | WAR < 0.5 | 167 | Stacked Ensemble |
+| **Role** | 0.5 ≤ WAR < 2.0 | 219 | Random Forest |
+| **Upper** | WAR ≥ 2.0 | 114 | Comp Engine |
 
-Contract **years** are predicted by a single Global GBM across all tiers (R² = +0.465).
+We also predicted contract years using a single Global GBM across all tiers (R² = +0.465).
 
 ---
 
@@ -74,23 +74,23 @@ Contract **years** are predicted by a single Global GBM across all tiers (R² = 
 
 ### 1. Injury Seasons Distort Simple Averages
 
-Bo Bichette played 628 PA in 2023 (3.88 WAR), injured his knee in 2024 and played only 336 PA (0.29 WAR), then bounced back in 2025 with 628 PA (3.82 WAR). A simple 3-year average gives him 2.66 WAR. A **PA-weighted average** — where each season is weighted by its plate appearance count — gives him 3.10 WAR. That difference moved his comp matches from a Gleyber Torres tier to a shortstop-premium tier, reducing his prediction error by millions.
+Bo Bichette had 628 plate appearances (PA) in 2023, earning a 3.88 WAR that season. The following season, he injured his knee and had only 336 PA with a 0.29 WAR, then bounced back in 2025 with 628 PA and a 3.82 WAR. A simple 3-year average gives him 2.66 WAR. A PA-weighted average, where each season is weighted by its plate appearance count, gives him 3.10 WAR. That difference moved his comp matches to a more shortstop-premium tier, reducing his prediction error by millions.
 
 Weighting by playing time means injury-shortened seasons contribute proportionally less, without using a hard cutoff that would exclude part-time players who play fewer games by design.
 
 ### 2. Teams Are Paying for Future Production, Not Past
 
-A 28-year-old signing a 5-year deal will be 33 when it ends. A model that ignores aging is predicting last year's performance on next year's contract. This project fits a **WAR aging curve** across all player-seasons in the dataset:
+A 29-year-old signing a 4-year deal will be 33 when it ends. A model that ignores aging is predicting last year's performance on next year's contract. This project fits a **WAR aging curve** across all player-seasons in the dataset:
 
 ```
 E[WAR | age] = β₀ + β₁ · age + β₂ · age²
 ```
 
-The population peak age comes out at 27.0, cwhich closely follows broader literature on athletic performance. Projected WAR feeds into both the stacked model and the comparable contract engine.
+The population peak age comes out at 27.0, cwhich aligns with broader literature on athletic performance. Projected WAR feeds into both the stacked model and the comparable contract engine.
 
 ### 3. Position Matters — But Only for Stars
 
-A shortstop who hits well is rarer than a first baseman who hits well. The data bears this out: upper-tier players in defensively-minded positions who bat well historically earn more per WAR than upper-tier players in positions with limited defensive responsibilities where batting is the focus. We add a positional scarcity index, where the median $/WAR for upper-tier contracts at each position group in each year is normalized to the league median.
+A shortstop who hits well is rarer than a first baseman who hits well. The data bears this out: upper-tier players in defensively-minded positions who bat well earn more per WAR than upper-tier players in positions with limited defensive responsibilities where batting is the focus. We add a positional scarcity index, where the median $/WAR for upper-tier contracts at each position group in each year is normalized to the league median.
 
 Four market-meaningful segments replace the raw position strings:
 
@@ -101,11 +101,11 @@ Four market-meaningful segments replace the raw position strings:
 | **BAT** | 1B, DH |
 | **C** | Catcher |
 
-A key point: this premium only applies to upper-tier players. A fringe shortstop and a fringe first baseman both sign near the league minimum. Because it's unlikely that teams are bidding against each other for fringe players, there's no positional premium applied to them.
+A key point: this premium only applies to upper-tier players. A fringe shortstop and a fringe first baseman both sign near the league minimum. Because teams aren't in high-stakes bidding wars against each other for fringe players, there's no positional premium applied to them.
 
 ### 4. Feature Selection Prevents Overfitting on Small Samples
 
-With 240 total features and 114 upper-tier training rows, models would likely memorize noise and overfit the training date. Therefore, a two-stage feature selection is applied within each tier:
+With 240 total features and 114 upper-tier training rows, some of our initial attempts at modeling memorized noise and overfit the training date. Therefore, a two-stage feature selection is applied within each tier:
 
 1. **Low-variance filter:** Remove features with std < 0.01 across that tier's training rows
 2. **Importance-based selection:** Fit a fast shallow GBM and keep only features with above-mean importance
@@ -121,7 +121,7 @@ For each tier, four algorithms are cross-validated against each other:
 - **Random Forest** — lower variance than GBM via bagging
 - **XGBoost** — newer and faster GBM variant commonly used in sports analytics 
 
-The winner by 5-fold CV R² on log(AAV) becomes the production model. For fringe players, Ridge wins, as the salary distribution is nearly flat and regularization matters most. For role players, Random Forest wins. For upper-tier players, XGBoost or GBM wins depending on the training run.
+The winner by 5-fold CV R² on log(AAV) becomes the leading production model. For fringe players, Ridge wins, as the salary distribution is nearly flat and regularization matters most. For role players, Random Forest wins. For upper-tier players, XGBoost or GBM wins depending on the training run.
 
 ---
 
@@ -141,7 +141,7 @@ For upper-tier players, projected total WAR is also calculated over the contract
 
 Once the 5 closest comps are found, each are adjusted for inflation and positional scarcity. Closer comps receive a higher weight.
 
-**Why does this beat regression for star players?** With only 114 training rows, and a salary range with incredibly high variance, regression models will struggle with the non-linear relationship between statistics and market outcomes. The comp engine bypasses this issue by looking directly at what similar players actually earned.
+This model outperformed our regression models for upper-tier players. With only 114 training rows, and a salary range with incredibly high variance, regression models will struggle with the non-linear relationship between statistics and market outcomes. The comp engine bypasses this issue by looking directly at what similar players actually earned.
 
 ---
 
@@ -172,7 +172,7 @@ Evaluated on 54 held-out contracts signed after the 2025 season** — players th
 | Stacked v10 | +0.684 | $4.0M | +0.221 |
 | **★ Hybrid Deployed** | **+0.808** | **$3.4M** | **+0.465** |
 
-The hybrid achieves both the highest R² *and* the lowest MAE by combining the strengths of each approach:
+The hybrid achieves both the highest R² and the lowest MAE by combining the strengths of each approach:
 - Stacked ensemble handles fringe players efficiently (R² = +0.513)
 - Random Forest handles role players, though not well (R² = +0.239)
 - Comp engine handles starting players well (R² = +0.519, MAE = $8.1M)
@@ -181,9 +181,9 @@ The hybrid achieves both the highest R² *and* the lowest MAE by combining the s
 
 ## Future Work
 
-**Player Agent Negotiating Features**: Some MLB player agents have a reputation for maximizing contract value for their players by leveraging policies and market dynamics. Incorporating player agent representation could further improve model performance.
+**Player Agent Negotiating Features**: Some MLB player agents have a reputation for maximizing contract value for their players by leveraging league policies and market dynamics. Incorporating player agent representation could further improve model performance.
 
-**Pitcher Modeling**: Pitchers make up about half of all free agent contracts and require an entirely different feature set (ERA, FIP, K%, spin rate, stuff+). Though this would require additional data collection, feature engineering and selection, and modeling, incorporating pitchers can help us better understand the overall market.
+**Pitcher Modeling**: Pitchers make up about half of all free agent contracts and require an entirely different feature set (ERA, FIP, K%, spin rate, etc.). Though this would require additional data collection, feature engineering and selection, and modeling attempts, incorporating pitchers can help us better understand the overall market.
 
 **Team Roster & Payroll Dynamics**: Teams make decisions based on their unique (and changing) roster needs and their payroll situation. A team who loses a key player in free agency may overpay another player to make up for that gap. A team that has a specific need and sees a high-level player available would likely contribute to bidding wars for them. 
 
@@ -197,3 +197,5 @@ All notebooks are designed to run in Google Colab. Upload 'mlb_contracts_9.csv',
 ```
 pandas, numpy, scikit-learn, xgboost, matplotlib, seaborn, joblib
 ```
+**Thank You**
+Thank you for reading through our project. We hope you enjoy it.
