@@ -1,6 +1,6 @@
 ---
 # ⚾ Predicting MLB Free Agent Contracts with Machine Learning Using Sabermetrics
-# DATA 606
+### DATA 606
 ---
 
 ## Project Summary
