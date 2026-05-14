@@ -162,7 +162,7 @@ In this setup, the Level-1 Ridge model assigns weights to the Level-0 prediction
 
 ## Results
 
-Evaluated on 54 held-out contracts signed after the 2025 season** — players the model never saw during training:
+Evaluated on 54 held-out contracts signed after the 2025 season:
 
 | Model | AAV R² | AAV MAE | Yrs R² |
 |-------|--------|---------|--------|
@@ -187,6 +187,8 @@ The hybrid achieves both the highest R² and the lowest MAE by combining the str
 
 **Team Roster & Payroll Dynamics**: Teams make decisions based on their unique (and changing) roster needs and their payroll situation. A team who loses a key player in free agency may overpay another player to make up for that gap. A team that has a specific need and sees a high-level player available would likely contribute to bidding wars for them. 
 
+**Explore Neural Networks**: With model performance in the role tier lagging behind other tiers, we can also explore neural networks in a further effort to find improvements in our modeling. 
+
 ---
 
 ## Running the Pipeline
@@ -194,8 +196,9 @@ The hybrid achieves both the highest R² and the lowest MAE by combining the str
 All notebooks are designed to run in Google Colab. Upload 'mlb_contracts_9.csv', 'mlb_player.csv', and 'team_interest_cache' to '/content/' before running. Adjustments may be needed for your environment if you plan to replicate.
 
 **Dependencies:**
-```
+
 pandas, numpy, scikit-learn, xgboost, matplotlib, seaborn, joblib
-```
+
 **Thank You**
+
 Thank you for reading through our project. We hope you enjoy it.
