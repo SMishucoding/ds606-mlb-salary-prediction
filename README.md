@@ -189,22 +189,6 @@ The hybrid achieves both the highest R² *and* the lowest MAE by combining the s
 
 ---
 
-## Project Structure
-
-```
-├── notebooks/
-
-│   └── MLB_Contract_Prediction_Final.ipynb   # Published explanatory guide
-├── data/
-│   ├── mlb_contracts_9.csv                # Free agent contracts 2017–2026
-│   ├── mlb_player.csv                     # FanGraphs player statistics 2016–2025
-│   └── team_interest_cache.csv            # MLBTR scraper output
-├── scraper/
-│   └── mlb_scraper_ner.py                 # MLBTR scraper + spaCy NER pipeline
-```
-
----
-
 ## Running the Pipeline
 
 All notebooks are designed to run in Google Colab. Upload 'mlb_contracts_9.csv', 'mlb_player.csv', and 'team_interest_cache' to '/content/' before running. Adjustments may be needed for your environment if you plan to replicate.
@@ -213,5 +197,3 @@ All notebooks are designed to run in Google Colab. Upload 'mlb_contracts_9.csv',
 ```
 pandas, numpy, scikit-learn, xgboost, matplotlib, seaborn, joblib
 ```
-
-*Built with Python, scikit-learn, XGBoost, React, and an unhealthy amount of baseball knowledge.*
