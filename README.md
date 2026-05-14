@@ -207,7 +207,7 @@ The hybrid achieves both the highest R² *and* the lowest MAE by combining the s
 
 ## Running the Pipeline
 
-All notebooks are designed to run in **Google Colab**. Upload 'mlb_contracts_9.csv', 'mlb_player.csv', and 'team_interest_cache' to '/content/' before running.
+All notebooks are designed to run in Google Colab. Upload 'mlb_contracts_9.csv', 'mlb_player.csv', and 'team_interest_cache' to '/content/' before running. Adjustments may be needed for your environment if you plan to replicate.
 
 **Dependencies:**
 ```
